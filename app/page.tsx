@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import CountdownTimer from './timer';
 
 function Header(props) {
         return <h1>{props.title ? props.title : "Default title"}</h1>
@@ -16,7 +17,7 @@ export default function HomePage() {
     return (
         <div>
             <Header title="Typing Test" />
-            <button onClick={handleClick}>Like ({likes})</button>
+            <CountdownTimer initialSeconds={10} />
         </div>
     )
 }
