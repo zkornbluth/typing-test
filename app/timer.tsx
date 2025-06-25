@@ -8,8 +8,12 @@ const CountdownTimer = () => {
   const [wordsToType, setWordsToType] = useState<string[]>([]);
   const [textareaValue, setTextAreaValue] = useState<string>("");
   const [testLength, setTestLength] = useState(1);
+  const [isDone, setIsDone] = useState<boolean>(false);
 
   useEffect(() => {
+    if (seconds <= 0 && !isDone) {
+      setIsDone(true);
+    }
     if (!isActive || seconds <= 0) {
       return;
     }
@@ -38,6 +42,8 @@ const CountdownTimer = () => {
     setIsActive(false);
     setTextAreaValue("");
     setTestLength(1);
+    setIsDone(false);
+    setSeconds(60);
   }
 
   const handleTextChange = (event) => {
@@ -62,7 +68,7 @@ const CountdownTimer = () => {
         {isActive && <h1>{formatTime(seconds)}</h1>}
         {!isActive && <button onClick={() => handleStart(1)}>Start 1 Minute Test</button>}
         {!isActive && <button onClick={() => handleStart(2)}>Start 2 Minute Test</button>}
-        {seconds <= 0 && 
+        {isDone &&
             <>
             <p>Time's up!</p>
             <p>WPM: {textareaValue.split(" ").length / testLength}</p>
