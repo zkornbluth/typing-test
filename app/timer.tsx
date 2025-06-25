@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './styles.css';
 import { generate } from 'random-words';
 
-const CountdownTimer = ({ initialSeconds }) => {
-  const [seconds, setSeconds] = useState(initialSeconds);
+const CountdownTimer = () => {
+  const [seconds, setSeconds] = useState(60);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [wordsToType, setWordsToType] = useState<string[]>([]);
-  const[textareaValue, setTextAreaValue] = useState<string>("");
+  const [textareaValue, setTextAreaValue] = useState<string>("");
+  const [testLength, setTestLength] = useState(1);
 
   useEffect(() => {
     if (!isActive || seconds <= 0) {
@@ -26,15 +27,17 @@ const CountdownTimer = ({ initialSeconds }) => {
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  const handleStart = () => {
+  const handleStart = (mins) => {
+    setTestLength(mins);
+    setSeconds(mins * 60);
     setIsActive(true);
-    setWordsToType(generate(150) as string[]);
+    setWordsToType(generate(125 * mins) as string[]);
   };
 
   const handleReset = () => {
-    setSeconds(initialSeconds);
     setIsActive(false);
     setTextAreaValue("");
+    setTestLength(1);
   }
 
   const handleTextChange = (event) => {
@@ -51,17 +54,18 @@ const CountdownTimer = ({ initialSeconds }) => {
         correctWords += 1;
       }
     }
-    return correctWords * 100 / inputList.length;
+    return Math.round(correctWords * 100 / inputList.length);
   }
 
   return (
     <div>
         {isActive && <h1>{formatTime(seconds)}</h1>}
-        {!isActive && <button onClick={handleStart}>Start 1 Minute Test</button>}
+        {!isActive && <button onClick={() => handleStart(1)}>Start 1 Minute Test</button>}
+        {!isActive && <button onClick={() => handleStart(2)}>Start 2 Minute Test</button>}
         {seconds <= 0 && 
             <>
             <p>Time's up!</p>
-            <p>WPM: {textareaValue.split(" ").length * 60 / initialSeconds}</p>
+            <p>WPM: {textareaValue.split(" ").length / testLength}</p>
             <p>Accuracy: {getAccuracy()}%</p>
             <button onClick={handleReset}>Reset</button>
             </>}
