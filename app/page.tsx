@@ -11,7 +11,7 @@ export default function HomePage() {
     return (
         <div>
             <Header title="Typing Test" />
-            <CountdownTimer initialSeconds={10} />
+            <CountdownTimer initialSeconds={60} />
         </div>
     )
 }
