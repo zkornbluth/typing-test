@@ -1,6 +1,8 @@
 export const metadata = {
   title: 'Typing Test',
-  description: 'See how fast you can type',
+  icons: {
+    icon: '/images.ico'
+  }
 }
 
 export default function RootLayout({
