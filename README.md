@@ -1,7 +1,9 @@
 # Typing Speed Test
-Run and use this to test your typing speed and accuracy.
+Run and use this to test your typing speed and accuracy. Check it out here: [https://zkornbluth.github.io/typing-test/](https://zkornbluth.github.io/typing-test/)
 
 ## Getting Started
+
+If you want to set this up locally, follow the instructions below.
 
 ### 1. Ensure you have the following installed:
 * Git
