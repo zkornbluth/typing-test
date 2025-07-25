@@ -62,6 +62,14 @@ const CountdownTimer = () => {
     }
     return Math.round(correctWords * 100 / inputList.length);
   }
+  
+  const getWPM = () => {
+    let numChars = textareaValue.length;
+
+    let numWords = numChars / 5;
+
+    return numWords / testLength;
+  }
 
   return (
     <div>
@@ -71,7 +79,7 @@ const CountdownTimer = () => {
         {isDone &&
             <>
             <p>Time's up!</p>
-            <p>WPM: {textareaValue.split(" ").length / testLength}</p>
+            <p>WPM: {getWPM()}</p>
             <p>Accuracy: {getAccuracy()}%</p>
             <button onClick={handleReset}>Reset</button>
             </>}
