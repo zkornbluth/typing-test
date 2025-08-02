@@ -43,3 +43,5 @@ When time runs out, the screen displays your speed and accuracy.
 
 
 Words are generated using [random-words](https://www.npmjs.com/package/random-words).
+
+<a href="https://www.flaticon.com/free-icons/typing" title="typing icons">Tab icon created by joeragan - Flaticon</a>

@@ -1,8 +1,10 @@
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 export const metadata = {
-  title: 'Typing Test',
+  title: 'To Do List',
   icons: {
-    icon: '/images.ico'
-  }
+    icon: `${basePath}keyboard.png`,
+  },
 }
 
 export default function RootLayout({
