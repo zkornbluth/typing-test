@@ -1,9 +1,13 @@
+/** 
+ * @author Zachary Kornbluth <github.com/zkornbluth>
+ */
+
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 export const metadata = {
-  title: 'To Do List',
+  title: 'Typing Speed Test',
   icons: {
-    icon: `${basePath}keyboard.png`,
+    icon: `${basePath}keyboard.png`, // This lets the tab icon work both locally and hosted via GitHub Pages
   },
 }
 

@@ -1,17 +1,18 @@
+/** 
+ * @fileoverview This file creates the HomePage with the header and typing speed test
+ * @author Zachary Kornbluth <github.com/zkornbluth>
+ */
+
 'use client';
 
-import CountdownTimer from './timer';
-
-function Header(props: any) {
-  return <h1>{props.title ? props.title : "Default title"}</h1>
-}
+import TypingTest from './timer';
  
 export default function HomePage() {
 
     return (
         <div>
-            <Header title="Typing Test" />
-            <CountdownTimer />
+            <h1>Typing Test</h1>
+            <TypingTest />
         </div>
     )
 }

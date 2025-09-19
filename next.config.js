@@ -1,5 +1,9 @@
+/** 
+ * @author Zachary Kornbluth <github.com/zkornbluth>
+ */
+
 const isGitHubPages = process.env.GITHUB_PAGES === 'true';
-const repoName = 'typing-test'; // replace with your actual repo name
+const repoName = 'typing-test';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

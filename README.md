@@ -1,3 +1,5 @@
+<!-- Author: Zachary Kornbluth -->
+<!-- GitHub: github.com/zkornbluth -->
 # Typing Speed Test
 Run and use this to test your typing speed and accuracy. Check it out here: [https://zkornbluth.github.io/typing-test/](https://zkornbluth.github.io/typing-test/)
 

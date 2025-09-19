@@ -1,8 +1,13 @@
+/** 
+ * @fileoverview This file creates the TypingTest component that handles the typing speed test
+ * @author Zachary Kornbluth <github.com/zkornbluth>
+ */
+
 import React, { useState, useEffect } from 'react';
 import './styles.css';
-import { generate } from 'random-words';
+import { generate } from 'random-words'; // JS package that generates random words
 
-const CountdownTimer = () => {
+const TypingTest = () => {
   const [seconds, setSeconds] = useState(60);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [wordsToType, setWordsToType] = useState<string[]>([]);
@@ -25,6 +30,7 @@ const CountdownTimer = () => {
     return () => clearInterval(timerId); // cleanup
   }, [isActive, seconds]);
 
+  // Show minutes:seconds
   const formatTime = (totalSeconds) => {
     const minutes = Math.floor(totalSeconds / 60);
     const remainingSeconds = totalSeconds % 60;
@@ -35,7 +41,7 @@ const CountdownTimer = () => {
     setTestLength(mins);
     setSeconds(mins * 60);
     setIsActive(true);
-    setWordsToType(generate(125 * mins) as string[]);
+    setWordsToType(generate(125 * mins) as string[]); // generate 125 words for each minute of test - way more than nearly every human can type
   };
 
   const handleReset = () => {
@@ -51,12 +57,12 @@ const CountdownTimer = () => {
   }
 
   const getAccuracy = () => {
-    let inputList = textareaValue.split(" ");
+    let inputList = textareaValue.split(" "); // split typed string into words by spaces
     let correctWords = 0;
     for (let i = 0; i < inputList.length; i++) {
       let inputWord = inputList[i];
       let toTypeWord = wordsToType[i];
-      if (inputWord === toTypeWord) {
+      if (inputWord === toTypeWord) { // accuracy is percent of words typed correctly, not characters
         correctWords += 1;
       }
     }
@@ -66,27 +72,36 @@ const CountdownTimer = () => {
   const getWPM = () => {
     let numChars = textareaValue.length;
 
-    let numWords = numChars / 5;
+    let numWords = numChars / 5; // Standard for typing speed is 5 characters (including spaces) per word
 
     return numWords / testLength;
   }
 
   return (
     <div>
-        {isActive && <h1>{formatTime(seconds)}</h1>}
-        {!isActive && <button onClick={() => handleStart(1)}>Start 1 Minute Test</button>}
-        {!isActive && <button onClick={() => handleStart(2)}>Start 2 Minute Test</button>}
-        {isDone &&
-            <>
-            <p>Time's up!</p>
-            <p>WPM: {getWPM()}</p>
-            <p>Accuracy: {getAccuracy()}%</p>
-            <button onClick={handleReset}>Reset</button>
-            </>}
-        {(isActive && seconds > 0) && <p className='toType'>{wordsToType.join(" ")}</p>}
-        {(isActive && seconds > 0) && <textarea value={textareaValue} onChange={handleTextChange} autoFocus={true} rows={15} cols={90} />}
+      {/* Countdown Timer */}
+      {isActive && <h1>{formatTime(seconds)}</h1>}
+
+      {/* Start Buttons */}
+      {!isActive && <button onClick={() => handleStart(1)}>Start 1 Minute Test</button>}
+      {!isActive && <button onClick={() => handleStart(2)}>Start 2 Minute Test</button>}
+
+      {/* End Screen: Display WPM, Accuracy, Reset Button */}
+      {isDone &&
+        <>
+        <p>Time's up!</p>
+        <p>WPM: {getWPM()}</p>
+        <p>Accuracy: {getAccuracy()}%</p>
+        <button onClick={handleReset}>Reset</button>
+        </>}
+
+      {/* Words to type */}
+      {(isActive && seconds > 0) && <p className='toType'>{wordsToType.join(" ")}</p>}
+
+      {/* TextArea user types into */}
+      {(isActive && seconds > 0) && <textarea value={textareaValue} onChange={handleTextChange} autoFocus={true} rows={15} cols={90} />}
     </div>
   );
 };
 
-export default CountdownTimer;
+export default TypingTest;
