@@ -57,16 +57,19 @@ const TypingTest = () => {
   }
 
   const getAccuracy = () => {
-    let inputList = textareaValue.split(" "); // split typed string into words by spaces
-    let correctWords = 0;
-    for (let i = 0; i < inputList.length; i++) {
-      let inputWord = inputList[i];
-      let toTypeWord = wordsToType[i];
-      if (inputWord === toTypeWord) { // accuracy is percent of words typed correctly, not characters
-        correctWords += 1;
+    const target = wordsToType.join(" ");
+    if (!textareaValue.length) return 0;
+
+    let correctChars = 0;
+    const totalChars = textareaValue.length;
+
+    for (let i = 0; i < totalChars; i++) {
+      if (i < target.length && textareaValue[i] === target[i]) {
+        correctChars += 1;
       }
     }
-    return Math.round(correctWords * 100 / inputList.length);
+
+    return Math.round((correctChars * 100) / totalChars);
   }
   
   const getWPM = () => {
@@ -76,6 +79,22 @@ const TypingTest = () => {
 
     return numWords / testLength;
   }
+
+  const targetText = wordsToType.join(" ");
+  const showInput = isActive && seconds > 0;
+  const showLockedResult = isDone && textareaValue.length > 0;
+
+  const renderColoredText = () => {
+    return textareaValue.split("").map((char, i) => {
+      const correct = i < targetText.length && targetText[i] === char;
+      const color = correct ? "#22c55e" : "#ef4444"; // green-500 / red-500
+      return (
+        <span key={i} style={{ color }}>
+          {char === "\n" ? "\n" : char}
+        </span>
+      );
+    });
+  };
 
   return (
     <div>
@@ -98,8 +117,27 @@ const TypingTest = () => {
       {/* Words to type */}
       {(isActive && seconds > 0) && <p className='toType'>{wordsToType.join(" ")}</p>}
 
-      {/* TextArea user types into */}
-      {(isActive && seconds > 0) && <textarea value={textareaValue} onChange={handleTextChange} autoFocus={true} rows={15} cols={90} />}
+      {/* Typing area: colored text (green/red) with optional textarea on top */}
+      {(showInput || showLockedResult) && (
+        <div className="typing-area-wrapper">
+          <div
+            className="typing-area-colored"
+            aria-hidden={showInput}
+          >
+            {renderColoredText()}
+          </div>
+          {showInput && (
+            <textarea
+              className="typing-area-input"
+              value={textareaValue}
+              onChange={handleTextChange}
+              autoFocus={true}
+              rows={15}
+              cols={90}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 };
