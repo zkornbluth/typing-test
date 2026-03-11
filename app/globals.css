@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base typography & background */
+body {
+  @apply antialiased;
+}
+
+/* Legacy styles adapted into Tailwind layer for easier control */
+@layer components {
+  /* Slightly smaller so prompt + textarea fit without scrolling in 2-min test */
+  .toType {
+    @apply w-full max-w-full mx-auto text-center px-1 text-[0.95rem] leading-snug;
+  }
+
+  .typing-area-wrapper {
+    @apply relative mt-4 mx-auto text-left rounded-lg overflow-hidden border border-slate-200 dark:border-slate-600;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .typing-area-colored {
+    @apply whitespace-pre-wrap break-words text-left leading-relaxed;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0.625rem; /* align with .typing-area-input inset + padding */
+    min-height: 8em;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Inset so the textarea stays inside the wrapper and never crosses the section border */
+  .typing-area-input {
+    @apply absolute m-0 text-transparent bg-transparent resize-none leading-relaxed caret-slate-900 dark:caret-white;
+    top: 0.375rem;
+    left: 0.375rem;
+    right: 0.375rem;
+    bottom: 0.375rem;
+    width: auto;
+    height: auto;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0.25rem;
+    box-sizing: border-box;
+  }
+}

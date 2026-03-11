@@ -1,6 +1,8 @@
-/** 
+/**
  * @author Zachary Kornbluth <github.com/zkornbluth>
  */
+
+import './globals.css';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 

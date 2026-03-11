@@ -1,13 +1,12 @@
-/** 
+/**
  * @fileoverview This file creates the TypingTest component that handles the typing speed test
  * @author Zachary Kornbluth <github.com/zkornbluth>
  */
 
 import React, { useState, useEffect } from 'react';
-import './styles.css';
 import { generate } from 'random-words'; // JS package that generates random words
 
-const TypingTest = () => {
+const TypingTest: React.FC = () => {
   const [seconds, setSeconds] = useState(60);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [wordsToType, setWordsToType] = useState<string[]>([]);
@@ -28,7 +27,7 @@ const TypingTest = () => {
     }, 1000);
 
     return () => clearInterval(timerId); // cleanup
-  }, [isActive, seconds]);
+  }, [isActive, seconds, isDone]);
 
   // Show minutes:seconds
   const formatTime = (totalSeconds) => {
@@ -87,35 +86,65 @@ const TypingTest = () => {
   const renderColoredText = () => {
     return textareaValue.split("").map((char, i) => {
       const correct = i < targetText.length && targetText[i] === char;
-      const color = correct ? "#22c55e" : "#ef4444"; // green-500 / red-500
+      const color =
+        correct && char !== " "
+          ? "rgb(22, 163, 74)" /* correct non-space: green */
+          : !correct && char !== " "
+            ? "rgb(185, 28, 28)" /* incorrect non-space: red */
+            : undefined; /* spaces: use background only when incorrect */
+      const backgroundColor =
+        char === " " && !correct ? "rgb(185, 28, 28)" : undefined; /* incorrect space: red highlight */
+      const style = { ...(color && { color }), ...(backgroundColor && { backgroundColor }) };
       return (
-        <span key={i} style={{ color }}>
+        <span key={i} style={Object.keys(style).length ? style : undefined}>
           {char === "\n" ? "\n" : char}
         </span>
       );
     });
   };
 
+  const btnClass =
+    'inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm hover:bg-slate-50 hover:border-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 transition-colors';
+
   return (
     <div>
-      {/* Countdown Timer */}
-      {isActive && <h1>{formatTime(seconds)}</h1>}
+      {/* Countdown Timer - centered and larger */}
+      {isActive && (
+        <div className="flex justify-center my-6">
+          <span className="text-5xl font-semibold tabular-nums text-slate-900 dark:text-slate-100">
+            {formatTime(seconds)}
+          </span>
+        </div>
+      )}
 
-      {/* Start Buttons */}
-      {!isActive && <button onClick={() => handleStart(1)}>Start 1 Minute Test</button>}
-      {!isActive && <button onClick={() => handleStart(2)}>Start 2 Minute Test</button>}
+      {/* Start Buttons - side by side, centered */}
+      {!isActive && (
+        <div className="flex flex-wrap justify-center gap-3 my-6">
+          <button type="button" onClick={() => handleStart(1)} className={btnClass}>
+            Start 1 Minute Test
+          </button>
+          <button type="button" onClick={() => handleStart(2)} className={btnClass}>
+            Start 2 Minute Test
+          </button>
+        </div>
+      )}
 
-      {/* End Screen: Display WPM, Accuracy, Reset Button */}
-      {isDone &&
-        <>
-        <p>Time's up!</p>
-        <p>WPM: {getWPM()}</p>
-        <p>Accuracy: {getAccuracy()}%</p>
-        <button onClick={handleReset}>Reset</button>
-        </>}
+      {/* End Screen: Display WPM, Accuracy, Reset Button - centered */}
+      {isDone && (
+        <div className="flex flex-col items-center gap-3 my-6 text-center">
+          <p className="text-lg font-medium text-slate-700 dark:text-slate-300">Time's up!</p>
+          <p className="text-slate-800 dark:text-slate-200">WPM: {getWPM()}</p>
+          <p className="text-slate-800 dark:text-slate-200">Accuracy: {getAccuracy()}%</p>
+          <button type="button" onClick={handleReset} className={btnClass}>
+            Reset
+          </button>
+        </div>
+      )}
 
-      {/* Words to type */}
-      {(isActive && seconds > 0) && <p className='toType'>{wordsToType.join(" ")}</p>}
+      {/* Words to type - widened so no horizontal scroll */}
+      {(isActive && seconds > 0) && (
+        <p className="toType text-slate-700 dark:text-slate-300">{wordsToType.join(" ")}</p>
+      )}
 
       {/* Typing area: colored text (green/red) with optional textarea on top */}
       {(showInput || showLockedResult) && (
@@ -132,7 +161,7 @@ const TypingTest = () => {
               value={textareaValue}
               onChange={handleTextChange}
               autoFocus={true}
-              rows={15}
+              rows={8}
               cols={90}
             />
           )}
